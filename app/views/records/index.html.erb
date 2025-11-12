@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Manage Records</h1>
+  <% if current_user.maker? || current_user.admin? %>
+    <%= link_to 'Create Record', new_record_path, class: 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Circle</th>
+    <th>Branch</th>
+    <th>Created By</th>
+    <th>Status</th>
+    <th>Created At</th>
+    <% if current_user.checker? %>
+      <th>Actions</th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+  <% @records.each do |record| %>
+    <tr>
+      <td><%= link_to record.title, record_path(record) %></td>
+      <td><%= record.circle&.name || '-' %></td>
+      <td><%= record.branch&.name || '-' %></td>
+      <td><%= record.created_by.full_name %></td>
+      <td>
+        <% if record.verified %>
+          <span class="badge bg-success">Verified</span>
+        <% elsif record.objected %>
+          <span class="badge bg-danger">Objected</span>
+        <% else %>
+          <span class="badge bg-warning">Pending</span>
+        <% end %>
+      </td>
+      <td><%= record.created_at.strftime('%B %d, %Y') %></td>
+      <% if current_user.checker? && !record.verified %>
+        <td>
+          <%= button_to 'Verify', verify_record_path(record), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Are you sure?' } %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

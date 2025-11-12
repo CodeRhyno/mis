@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Manage Permissions</h1>
+  <%= link_to 'Create Permission', new_permission_path, class: 'btn btn-primary' %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Resource Type</th>
+    <th>Action</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @permissions.each do |permission| %>
+    <tr>
+      <td><%= link_to permission.title, permission_path(permission) %></td>
+      <td><%= permission.resource_type || '-' %></td>
+      <td><%= permission.action || '-' %></td>
+      <td><%= permission.description&.truncate(50) || '-' %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

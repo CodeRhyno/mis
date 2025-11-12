@@ -1,0 +1,9 @@
+//= link_tree ../images
+//= link_directory ../../javascript .js
+//= link_directory ../stylesheets .css
+//= link_directory ../stylesheets .scss
+//= link bootstrap.min.js
+//= link popper.js
+//= link controllers/application.js
+//= link controllers/hello_controller.js
+//= link controllers/index.js

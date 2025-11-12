@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h1>Verify Document</h1>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Upload PDF to Verify</h5>
+        <p class="card-text">
+          Upload a PDF document to verify if it exists in the system and check its integrity using SHA-256 hash verification.
+        </p>
+
+        <%= form_with url: verify_documents_path, method: :post, local: true, multipart: true do |f| %>
+          <div class="mb-3">
+            <%= file_field_tag :file, accept: 'application/pdf', class: 'form-control', required: true %>
+            <div class="form-text">Select a PDF file to verify its authenticity</div>
+          </div>
+
+          <div>
+            <%= submit_tag 'Verify Document', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">How Document Verification Works</h5>
+        <ol>
+          <li>When a PDF is uploaded to a record, the system calculates its SHA-256 hash</li>
+          <li>This hash is stored in the database as a unique fingerprint of the document</li>
+          <li>To verify a document, upload the PDF file here</li>
+          <li>The system will calculate the hash of your uploaded file</li>
+          <li>If the hash matches any document in the system, the document is verified as authentic</li>
+          <li>If the hash doesn't match, either the document was never uploaded or has been modified</li>
+        </ol>
+
+        <div class="alert alert-info mt-3">
+          <strong>Note:</strong> SHA-256 is a cryptographic hash function. Even a tiny change in the document (like adding a single space) will result in a completely different hash, ensuring the integrity of the document.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

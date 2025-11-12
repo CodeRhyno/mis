@@ -1,0 +1,39 @@
+<h1>Edit Permission</h1>
+
+<%= form_with model: @permission, local: true do |f| %>
+  <% if @permission.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@permission.errors.count, "error") %> prohibited this permission from being saved:</h4>
+      <ul>
+        <% @permission.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :title, class: 'form-label' %>
+    <%= f.text_field :title, class: 'form-control', required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :resource_type, class: 'form-label' %>
+    <%= f.text_field :resource_type, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :action, class: 'form-label' %>
+    <%= f.text_field :action, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: 'form-label' %>
+    <%= f.text_area :description, class: 'form-control', rows: 4 %>
+  </div>
+
+  <div>
+    <%= f.submit 'Update Permission', class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', permission_path(@permission), class: 'btn btn-secondary' %>
+  </div>
+<% end %>

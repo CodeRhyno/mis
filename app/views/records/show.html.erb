@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-md-8">
+    <h1>Record Details</h1>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title"><%= @record.title %></h5>
+
+        <table class="table">
+          <tr>
+            <th>Description:</th>
+            <td><%= @record.description %></td>
+          </tr>
+          <tr>
+            <th>Circle:</th>
+            <td><%= @record.circle&.name || '-' %></td>
+          </tr>
+          <tr>
+            <th>Branch:</th>
+            <td><%= @record.branch&.name || '-' %></td>
+          </tr>
+          <tr>
+            <th>Created By:</th>
+            <td><%= @record.created_by.full_name %></td>
+          </tr>
+          <tr>
+            <th>Status:</th>
+            <td>
+              <% if @record.verified %>
+                <span class="badge bg-success">Verified</span>
+              <% elsif @record.objected %>
+                <span class="badge bg-danger">Objected</span>
+              <% else %>
+                <span class="badge bg-warning">Pending</span>
+              <% end %>
+            </td>
+          </tr>
+          <% if @record.verified %>
+            <tr>
+              <th>Verified By:</th>
+              <td><%= @record.verified_by&.full_name %></td>
+            </tr>
+            <tr>
+              <th>Verified At:</th>
+              <td><%= @record.verified_at&.strftime('%B %d, %Y at %I:%M %p') %></td>
+            </tr>
+          <% end %>
+          <% if @record.objected %>
+            <tr>
+              <th>Objection Reason:</th>
+              <td><%= @record.objection_reason %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <th>Created At:</th>
+            <td><%= @record.created_at.strftime('%B %d, %Y') %></td>
+          </tr>
+        </table>
+
+        <h6 class="mt-4">Permissions:</h6>
+        <ul>
+          <% @record.permissions.each do |permission| %>
+            <li><%= permission.title %></li>
+          <% end %>
+        </ul>
+
+        <h6 class="mt-4">Documents:</h6>
+        <ul>
+          <% @record.documents.each do |document| %>
+            <li><%= document.filename %> (Uploaded by <%= document.uploaded_by.full_name %>)</li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <%= link_to 'Edit Record', edit_record_path(@record), class: 'btn btn-primary' %>
+      <%= button_to 'Delete Record', record_path(@record), method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to delete this record? This action cannot be undone.' } %>
+      <%= link_to 'Back to Records', records_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>

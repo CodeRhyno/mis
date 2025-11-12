@@ -1,0 +1,75 @@
+<h1>Create User</h1>
+
+<%= form_with model: @user, local: true do |f| %>
+  <% if @user.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h4>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <%= f.label :first_name, class: 'form-label' %>
+        <%= f.text_field :first_name, class: 'form-control', required: true %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="mb-3">
+        <%= f.label :last_name, class: 'form-label' %>
+        <%= f.text_field :last_name, class: 'form-control', required: true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :email, class: 'form-label' %>
+    <%= f.email_field :email, class: 'form-control', required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= label_tag :password, 'Password', class: 'form-label' %>
+    <%= password_field_tag 'user[password]', nil, class: 'form-control', required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :role, class: 'form-label' %>
+    <%= f.select :role, [['Admin', 'admin'], ['Circle Admin', 'circle_admin'], ['Maker', 'maker'], ['Checker', 'checker']], {}, class: 'form-select', required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :circle_id, 'Circle', class: 'form-label' %>
+    <%= f.collection_select :circle_id, @circles, :id, :name, { prompt: 'Select Circle' }, class: 'form-select' %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :branch_id, 'Branch', class: 'form-label' %>
+    <%= f.collection_select :branch_id, @branches, :id, :name, { prompt: 'Select Branch' }, class: 'form-select' %>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Permissions</label>
+    <% @permissions.each do |permission| %>
+      <div class="form-check">
+        <%= check_box_tag 'permission_ids[]', permission.id, false, class: 'form-check-input', id: "permission_#{permission.id}" %>
+        <%= label_tag "permission_#{permission.id}", permission.title, class: 'form-check-label' %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mb-3 form-check">
+    <%= f.check_box :active, class: 'form-check-input' %>
+    <%= f.label :active, class: 'form-check-label' %>
+  </div>
+
+  <div>
+    <%= f.submit 'Create User', class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', users_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

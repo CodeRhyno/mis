@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Manage Circles</h1>
+  <%= link_to 'Create Circle', new_circle_path, class: 'btn btn-primary' %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>Branches Count</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @circles.each do |circle| %>
+    <tr>
+      <td><%= link_to circle.name, circle_path(circle) %></td>
+      <td><%= circle.code || '-' %></td>
+      <td><%= circle.description&.truncate(50) || '-' %></td>
+      <td>
+        <% if circle.active %>
+          <span class="badge bg-success">Active</span>
+        <% else %>
+          <span class="badge bg-secondary">Inactive</span>
+        <% end %>
+      </td>
+      <td><%= circle.branches.count %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

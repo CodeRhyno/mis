@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Manage Users</h1>
+  <%= link_to 'Create User', new_user_path, class: 'btn btn-primary' %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Email</th>
+    <th>Name</th>
+    <th>Role</th>
+    <th>Circle</th>
+    <th>Branch</th>
+    <th>Status</th>
+    <th>Created At</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= link_to user.email, user_path(user) %></td>
+      <td><%= user.full_name %></td>
+      <td><%= user.role.titleize %></td>
+      <td><%= user.circle&.name || '-' %></td>
+      <td><%= user.branch&.name || '-' %></td>
+      <td>
+        <% if user.suspended %>
+          <span class="badge bg-danger">Suspended</span>
+        <% elsif user.active %>
+          <span class="badge bg-success">Active</span>
+        <% else %>
+          <span class="badge bg-secondary">Inactive</span>
+        <% end %>
+      </td>
+      <td><%= user.created_at.strftime('%B %d, %Y') %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

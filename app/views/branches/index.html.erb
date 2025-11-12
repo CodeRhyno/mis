@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Manage Branches</h1>
+  <%= link_to 'Create Branch', new_branch_path, class: 'btn btn-primary' %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Circle</th>
+    <th>Address</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @branches.each do |branch| %>
+    <tr>
+      <td><%= link_to branch.name, branch_path(branch) %></td>
+      <td><%= branch.code || '-' %></td>
+      <td><%= branch.circle.name %></td>
+      <td><%= branch.address&.truncate(30) || '-' %></td>
+      <td>
+        <% if branch.active %>
+          <span class="badge bg-success">Active</span>
+        <% else %>
+          <span class="badge bg-secondary">Inactive</span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

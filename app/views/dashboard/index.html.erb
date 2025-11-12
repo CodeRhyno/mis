@@ -1,0 +1,98 @@
+<h1>Dashboard</h1>
+
+<div class="row mt-4">
+  <% if current_user.admin? %>
+    <div class="col-md-3">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Users</h5>
+          <p class="card-text display-4"><%= @users_count %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Records</h5>
+          <p class="card-text display-4"><%= @records_count %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Circles</h5>
+          <p class="card-text display-4"><%= @circles_count %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Branches</h5>
+          <p class="card-text display-4"><%= @branches_count %></p>
+        </div>
+      </div>
+    </div>
+  <% elsif current_user.checker? %>
+    <div class="col-md-12">
+      <h3>Unverified Records</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Created By</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @unverified_records.each do |record| %>
+          <tr>
+            <td><%= link_to record.title, record_path(record) %></td>
+            <td><%= record.created_by.full_name %></td>
+            <td><%= record.created_at.strftime('%B %d, %Y') %></td>
+            <td>
+              <%= button_to 'Verify', verify_record_path(record), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Are you sure you want to verify this record?' } %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% elsif current_user.maker? %>
+    <div class="col-md-12">
+      <h3>My Records</h3>
+      <%= link_to 'Create New Record', new_record_path, class: 'btn btn-primary mb-3' %>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Created At</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @my_records.each do |record| %>
+          <tr>
+            <td><%= link_to record.title, record_path(record) %></td>
+            <td>
+              <% if record.verified %>
+                <span class="badge bg-success">Verified</span>
+              <% elsif record.objected %>
+                <span class="badge bg-danger">Objected</span>
+              <% else %>
+                <span class="badge bg-warning">Pending</span>
+              <% end %>
+            </td>
+            <td><%= record.created_at.strftime('%B %d, %Y') %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
